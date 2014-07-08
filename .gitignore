@@ -1,3 +1,9 @@
+target/*
+.idea/*
+*.iml
+.settings/*
+javadocs/*
+
 *.class
 
 # Mobile Tools for Java (J2ME)
