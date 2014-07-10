@@ -33,6 +33,8 @@ import java.util.List;
 
 public class Frontier extends Configurable {
 
+    protected Environment env;
+
 	protected static final Logger logger = Logger.getLogger(Frontier.class.getName());
 
 	protected WorkQueues workQueues;
@@ -52,6 +54,7 @@ public class Frontier extends Configurable {
 
 	public Frontier(Environment env, CrawlConfig config, DocIDServer docIdServer) {
 		super(config);
+        this.env = env;
 		this.counters = new Counters(env, config);
 		this.docIdServer = docIdServer;
 		try {
@@ -190,9 +193,12 @@ public class Frontier extends Configurable {
 	}
 
 	public void close() {
-		sync();
+		//sync(); This is broken because Java BerkeleyDB has a bad trace method.
+        // Close should do the same thing.
 		workQueues.close();
+        docIdServer.close();
         counters.close();
+        env.close();
 	}
 
 	public void finish() {

@@ -40,7 +40,7 @@ import java.util.List;
  * 
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
-public class WebCrawler implements Runnable {
+public class WebCrawler<T> implements Runnable {
 
 	protected static final Logger logger = Logger.getLogger(WebCrawler.class.getName());
 
@@ -194,7 +194,7 @@ public class WebCrawler implements Runnable {
 	 * List that can then be used for processing the local data of crawlers (if
 	 * needed).
 	 */
-	public Object getMyLocalData() {
+	public T getMyLocalData() {
 		return null;
 	}
 

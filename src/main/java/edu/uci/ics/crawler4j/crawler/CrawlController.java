@@ -25,7 +25,6 @@ import edu.uci.ics.crawler4j.frontier.Frontier;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
-import edu.uci.ics.crawler4j.util.IO;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -38,7 +37,7 @@ import java.util.List;
  * 
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
-public class CrawlController extends Configurable {
+public class CrawlController<D , T extends WebCrawler<D>> extends Configurable {
 
 	static final Logger logger = Logger.getLogger(CrawlController.class.getName());
 
@@ -52,7 +51,7 @@ public class CrawlController extends Configurable {
 	 * Once the crawling session finishes the controller collects the local data
 	 * of the crawler threads and stores them in this List.
 	 */
-	protected List<Object> crawlersLocalData = new ArrayList<>();
+	protected List<D> crawlersLocalData = new ArrayList<>();
 
 	/**
 	 * Is the crawling of this session finished?
@@ -65,12 +64,33 @@ public class CrawlController extends Configurable {
 	 */
 	protected boolean shuttingDown;
 
+    /**
+     * Time allocated to 1st check if crawlers still active. Default 10.
+     */
+    protected int isActive1stSleep = 10;
+    /**
+     * Time allocated to 2nd check if crawlers still active. Default 10.
+     */
+    protected int isActive2ndSleep = 10;
+    /**
+     * Time allocated to clean up Default 10.
+     */
+    protected int cleanUpSleep = 10;
+
 	protected PageFetcher pageFetcher;
 	protected RobotstxtServer robotstxtServer;
 	protected Frontier frontier;
 	protected DocIDServer docIdServer;
 
 	protected final Object waitingLock = new Object();
+
+    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotstxtServer robotstxtServer,
+                           int isActive1stSleep, int isActive2ndSleep, int cleanUpSleep) throws Exception {
+        this(config, pageFetcher, robotstxtServer);
+        this.isActive1stSleep = isActive1stSleep;
+        this.isActive2ndSleep = isActive2ndSleep;
+        this.cleanUpSleep = cleanUpSleep;
+    }
 
 	public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotstxtServer robotstxtServer)
 			throws Exception {
@@ -97,11 +117,20 @@ public class CrawlController extends Configurable {
 				throw new Exception("Couldn't create this folder: " + envHome.getAbsolutePath());
 			}
 		}
-		if (!resumable) {
-			IO.deleteFolderContents(envHome);
-		}
+
 
 		Environment env = new Environment(envHome, envConfig);
+
+        if (!resumable) {
+            List<String> names = env.getDatabaseNames();
+            for (String name : names) {
+                long count = env.truncateDatabase(null, name, true);
+                logger.info(count + " items deleted from database " + name);
+            }
+            //env.removeDatabase(null, "DocIDs");
+            //IO.deleteFolderContents(envHome);
+        }
+
 		docIdServer = new DocIDServer(env, config);
 		frontier = new Frontier(env, config, docIdServer);
 
@@ -121,7 +150,7 @@ public class CrawlController extends Configurable {
 	 *            the number of concurrent threads that will be contributing in
 	 *            this crawling session.
 	 */
-	public <T extends WebCrawler> void start(final Class<T> _c, final int numberOfCrawlers) {
+	public void start(final Class<T> _c, final int numberOfCrawlers) {
 		this.start(_c, numberOfCrawlers, true);
 	}
 
@@ -134,11 +163,11 @@ public class CrawlController extends Configurable {
 	 *            the number of concurrent threads that will be contributing in
 	 *            this crawling session.
 	 */
-	public <T extends WebCrawler> void startNonBlocking(final Class<T> _c, final int numberOfCrawlers) {
+	public void startNonBlocking(final Class<T> _c, final int numberOfCrawlers) {
 		this.start(_c, numberOfCrawlers, false);
 	}
 
-	protected <T extends WebCrawler> void start(final Class<T> _c, final int numberOfCrawlers, boolean isBlocking) {
+	protected void start(final Class<T> _c, final int numberOfCrawlers, boolean isBlocking) {
 		try {
 			finished = false;
 			crawlersLocalData.clear();
@@ -192,7 +221,7 @@ public class CrawlController extends Configurable {
 									// are
 									// alive.
 									logger.info("It looks like no thread is working, waiting for 10 seconds to make sure...");
-									sleep(10);
+									sleep(isActive1stSleep);
 
 									someoneIsWorking = false;
 									for (int i = 0; i < threads.size(); i++) {
@@ -208,7 +237,7 @@ public class CrawlController extends Configurable {
 												continue;
 											}
 											logger.info("No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...");
-											sleep(10);
+											sleep(isActive2ndSleep);
 											queueLength = frontier.getQueueLength();
 											if (queueLength > 0) {
 												continue;
@@ -227,7 +256,7 @@ public class CrawlController extends Configurable {
 										}
 
 										logger.info("Waiting for 10 seconds before final clean up...");
-										sleep(10);
+										sleep(cleanUpSleep);
 
 										frontier.close();
 										docIdServer.close();
@@ -258,6 +287,7 @@ public class CrawlController extends Configurable {
 		}
 	}
 
+
 	/**
 	 * Wait until this crawling session finishes.
 	 */
@@ -281,7 +311,7 @@ public class CrawlController extends Configurable {
 	 * of the crawler threads and stores them in a List. This function returns
 	 * the reference to this list.
 	 */
-	public List<Object> getCrawlersLocalData() {
+	public List<D> getCrawlersLocalData() {
 		return crawlersLocalData;
 	}
 
