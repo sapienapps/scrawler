@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.HttpStatus;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 

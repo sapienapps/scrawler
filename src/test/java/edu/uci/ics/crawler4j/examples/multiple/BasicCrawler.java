@@ -20,7 +20,7 @@ package edu.uci.ics.crawler4j.examples.multiple;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -56,16 +56,16 @@ public class BasicCrawler extends WebCrawler {
 
 	@Override
 	public void visit(Page page) {
-		int docid = page.getWebURL().getDocid();
-		String url = page.getWebURL().getURL();
-		int parentDocid = page.getWebURL().getParentDocid();
+		int docid = page.url().getDocid();
+		String url = page.url().getURL();
+		int parentDocid = page.url().getParentDocid();
 
 		System.out.println("Docid: " + docid);
 		System.out.println("URL: " + url);
 		System.out.println("Docid of parent page: " + parentDocid);
 
-		if (page.getParseData() instanceof HtmlParseData) {
-			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+		if (page.parseData() instanceof HtmlParseData) {
+			HtmlParseData htmlParseData = (HtmlParseData) page.parseData();
 			String text = htmlParseData.getText();
 			String html = htmlParseData.getHtml();
 			List<WebURL> links = htmlParseData.getOutgoingUrls();

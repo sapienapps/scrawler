@@ -17,7 +17,7 @@
 
 package edu.uci.ics.crawler4j.examples.basic;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -51,13 +51,13 @@ public class BasicCrawler extends WebCrawler {
 	 */
 	@Override
 	public void visit(Page page) {
-		int docid = page.getWebURL().getDocid();
-		String url = page.getWebURL().getURL();
-		String domain = page.getWebURL().getDomain();
-		String path = page.getWebURL().getPath();
-		String subDomain = page.getWebURL().getSubDomain();
-		String parentUrl = page.getWebURL().getParentUrl();
-		String anchor = page.getWebURL().getAnchor();
+		int docid = page.url().getDocid();
+		String url = page.url().getURL();
+		String domain = page.url().getDomain();
+		String path = page.url().getPath();
+		String subDomain = page.url().getSubDomain();
+		String parentUrl = page.url().getParentUrl();
+		String anchor = page.url().getAnchor();
 
 		System.out.println("Docid: " + docid);
 		System.out.println("URL: " + url);
@@ -67,8 +67,8 @@ public class BasicCrawler extends WebCrawler {
 		System.out.println("Parent page: " + parentUrl);
 		System.out.println("Anchor text: " + anchor);
 		
-		if (page.getParseData() instanceof HtmlParseData) {
-			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+		if (page.parseData() instanceof HtmlParseData) {
+			HtmlParseData htmlParseData = (HtmlParseData) page.parseData();
 			String text = htmlParseData.getText();
 			String html = htmlParseData.getHtml();
 			List<WebURL> links = htmlParseData.getOutgoingUrls();
@@ -78,7 +78,7 @@ public class BasicCrawler extends WebCrawler {
 			System.out.println("Number of outgoing links: " + links.size());
 		}
 
-		Header[] responseHeaders = page.getFetchResponseHeaders();
+		Header[] responseHeaders = page.fetchResponseHeaders();
 		if (responseHeaders != null) {
 			System.out.println("Response headers:");
 			for (Header header : responseHeaders) {

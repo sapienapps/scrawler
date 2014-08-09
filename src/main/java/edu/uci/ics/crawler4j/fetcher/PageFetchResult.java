@@ -25,7 +25,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
@@ -75,10 +75,10 @@ public class PageFetchResult {
 	public boolean fetchContent(Page page) {
 		try {
 			page.load(entity);
-			page.setFetchResponseHeaders(responseHeaders);
+			page.fetchResponseHeaders_$eq(responseHeaders);
 			return true;
 		} catch (Exception e) {
-			logger.info("Exception while fetching content for: " + page.getWebURL().getURL() + " [" + e.getMessage()
+			logger.info("Exception while fetching content for: " + page.url().getURL() + " [" + e.getMessage()
 					+ "]");
 		}
 		return false;

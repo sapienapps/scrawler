@@ -20,7 +20,7 @@ package edu.uci.ics.crawler4j.examples.imagecrawler;
 import java.io.File;
 import java.util.regex.Pattern;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.BinaryParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -76,10 +76,10 @@ public class ImageCrawler extends WebCrawler {
 
 	@Override
 	public void visit(Page page) {
-		String url = page.getWebURL().getURL();
+		String url = page.url().getURL();
 
 		// We are only interested in processing images
-		if (!(page.getParseData() instanceof BinaryParseData)) {
+		if (!(page.parseData() instanceof BinaryParseData)) {
 			return;
 		}
 
@@ -88,7 +88,7 @@ public class ImageCrawler extends WebCrawler {
 		}
 
 		// Not interested in very small images
-		if (page.getContentData().length < 10 * 1024) {
+		if (page.contentData().length < 10 * 1024) {
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class ImageCrawler extends WebCrawler {
 		String hashedName = Cryptography.MD5(url) + extension;
 
 		// store image
-		IO.writeBytesToFile(page.getContentData(), storageFolder.getAbsolutePath() + "/" + hashedName);
+		IO.writeBytesToFile(page.contentData(), storageFolder.getAbsolutePath() + "/" + hashedName);
 
 		System.out.println("Stored: " + url);
 	}

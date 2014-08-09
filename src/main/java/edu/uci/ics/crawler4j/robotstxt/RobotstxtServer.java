@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 
 import org.apache.http.HttpStatus;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -91,13 +91,13 @@ public class RobotstxtServer {
 			if (fetchResult.getStatusCode() == HttpStatus.SC_OK) {
 				Page page = new Page(robotsTxtUrl);
 				fetchResult.fetchContent(page);
-				if (Util.hasPlainTextContent(page.getContentType())) {
+				if (Util.hasPlainTextContent(page.contentType())) {
 					try {
 						String content;
-						if (page.getContentCharset() == null) {
-							content = new String(page.getContentData());
+						if (page.contentCharset() == null) {
+							content = new String(page.contentData());
 						} else {
-							content = new String(page.getContentData(), page.getContentCharset());
+							content = new String(page.contentData(), page.contentCharset());
 						}
 						directives = RobotstxtParser.parse(content, config.getUserAgentName());
 					} catch (Exception e) {

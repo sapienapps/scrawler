@@ -20,7 +20,7 @@ package edu.uci.ics.crawler4j.examples.localdata;
 import org.apache.http.HttpStatus;
 
 import com.sapienapps.scrawler.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -73,7 +73,7 @@ public class Downloader {
 		System.out.println("Processing: " + url);
 		Page page = download(url);
 		if (page != null) {
-			ParseData parseData = page.getParseData();
+			ParseData parseData = page.parseData();
 			if (parseData != null) {
 				if (parseData instanceof HtmlParseData) {
 					HtmlParseData htmlParseData = (HtmlParseData) parseData;

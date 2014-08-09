@@ -32,7 +32,7 @@ import org.apache.tika.parser.html.HtmlParser;
 
 import com.sapienapps.scrawler.crawler.Configurable;
 import com.sapienapps.scrawler.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.Util;
@@ -55,26 +55,26 @@ public class Parser extends Configurable {
 
 	public boolean parse(Page page, String contextURL) {
 
-		if (Util.hasBinaryContent(page.getContentType())) {
+		if (Util.hasBinaryContent(page.contentType())) {
 			if (!config().isIncludeBinaryContentInCrawling()) {
 				return false;
 			}
 
-			page.setParseData(BinaryParseData.getInstance());
+			page.parseData_$eq(BinaryParseData.getInstance());
 			return true;
 
-		} else if (Util.hasPlainTextContent(page.getContentType())) {
+		} else if (Util.hasPlainTextContent(page.contentType())) {
 			try {
 				TextParseData parseData = new TextParseData();
-				if (page.getContentCharset() == null) {
-					parseData.setTextContent(new String(page.getContentData()));
+				if (page.contentCharset() == null) {
+					parseData.setTextContent(new String(page.contentData()));
 				} else {
-					parseData.setTextContent(new String(page.getContentData(), page.getContentCharset()));
+					parseData.setTextContent(new String(page.contentData(), page.contentCharset()));
 				}
-				page.setParseData(parseData);
+				page.parseData_$eq(parseData);
 				return true;
 			} catch (Exception e) {
-				logger.error(e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+				logger.error(e.getMessage() + ", while parsing: " + page.url().getURL());
 			}
 			return false;
 		}
@@ -83,22 +83,22 @@ public class Parser extends Configurable {
 		HtmlContentHandler contentHandler = new HtmlContentHandler();
 		InputStream inputStream = null;
 		try {
-			inputStream = new ByteArrayInputStream(page.getContentData());
+			inputStream = new ByteArrayInputStream(page.contentData());
 			htmlParser.parse(inputStream, contentHandler, metadata, parseContext);
 		} catch (Exception e) {
-			logger.error(e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+			logger.error(e.getMessage() + ", while parsing: " + page.url().getURL());
 		} finally {
 			try {
 				if (inputStream != null) {
 					inputStream.close();
 				}
 			} catch (IOException e) {
-				logger.error(e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+				logger.error(e.getMessage() + ", while parsing: " + page.url().getURL());
 			}
 		}
 
-		if (page.getContentCharset() == null) {
-			page.setContentCharset(metadata.get("Content-Encoding"));
+		if (page.contentCharset() == null) {
+			page.contentCharset_$eq(metadata.get("Content-Encoding"));
 		}
 
 		HtmlParseData parseData = new HtmlParseData();
@@ -142,17 +142,17 @@ public class Parser extends Configurable {
 		parseData.setOutgoingUrls(outgoingUrls);
 
 		try {
-			if (page.getContentCharset() == null) {
-				parseData.setHtml(new String(page.getContentData()));
+			if (page.contentCharset() == null) {
+				parseData.setHtml(new String(page.contentData()));
 			} else {
-				parseData.setHtml(new String(page.getContentData(), page.getContentCharset()));
+				parseData.setHtml(new String(page.contentData(), page.contentCharset()));
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		page.setParseData(parseData);
+		page.parseData_$eq(parseData);
 		return true;
 
 	}

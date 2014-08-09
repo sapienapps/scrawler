@@ -17,6 +17,7 @@
 
 package edu.uci.ics.crawler4j.crawler;
 
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.CustomFetchStatus;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -318,7 +319,7 @@ public class WebCrawler<T> implements Runnable {
 				return;
 			}
 
-			ParseData parseData = page.getParseData();
+			ParseData parseData = page.parseData();
 			if (parseData instanceof HtmlParseData) {
 				HtmlParseData htmlParseData = (HtmlParseData) parseData;
 

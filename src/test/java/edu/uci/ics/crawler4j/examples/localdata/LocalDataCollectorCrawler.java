@@ -17,7 +17,7 @@
 
 package edu.uci.ics.crawler4j.examples.localdata;
 
-import edu.uci.ics.crawler4j.crawler.Page;
+import com.sapienapps.scrawler.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -45,11 +45,11 @@ public class LocalDataCollectorCrawler extends WebCrawler {
 
 	@Override
 	public void visit(Page page) {
-		System.out.println("Visited: " + page.getWebURL().getURL());
+		System.out.println("Visited: " + page.url().getURL());
 		myCrawlStat.incProcessedPages();
 
-		if (page.getParseData() instanceof HtmlParseData) {
-			HtmlParseData parseData = (HtmlParseData) page.getParseData();
+		if (page.parseData() instanceof HtmlParseData) {
+			HtmlParseData parseData = (HtmlParseData) page.parseData();
 			List<WebURL> links = parseData.getOutgoingUrls();
 			myCrawlStat.incTotalLinks(links.size());
 			try {
