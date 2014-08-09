@@ -113,7 +113,7 @@ public class WebCrawler<T> implements Runnable {
 		this.robotstxtServer = crawlController.getRobotstxtServer();
 		this.docIdServer = crawlController.getDocIdServer();
 		this.frontier = crawlController.getFrontier();
-		this.parser = new Parser(crawlController.getConfig());
+		this.parser = new Parser(crawlController.config());
 		this.myController = crawlController;
 		this.isWaitingForNewURLs = false;
 	}
@@ -267,7 +267,7 @@ public class WebCrawler<T> implements Runnable {
 			handlePageStatusCode(curURL, statusCode, CustomFetchStatus.getStatusDescription(statusCode));
 			if (statusCode != HttpStatus.SC_OK) {
 				if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-					if (myController.getConfig().isFollowRedirects()) {
+					if (myController.config().isFollowRedirects()) {
 						String movedToUrl = fetchResult.getMovedToUrl();
 						if (movedToUrl == null) {
 							return;
@@ -323,7 +323,7 @@ public class WebCrawler<T> implements Runnable {
 				HtmlParseData htmlParseData = (HtmlParseData) parseData;
 
 				List<WebURL> toSchedule = new ArrayList<>();
-				int maxCrawlDepth = myController.getConfig().getMaxDepthOfCrawling();
+				int maxCrawlDepth = myController.config().getMaxDepthOfCrawling();
 				for (WebURL webURL : htmlParseData.getOutgoingUrls()) {
 					webURL.setParentDocid(docid);
 					webURL.setParentUrl(curURL.getURL());

@@ -17,6 +17,8 @@
 
 package edu.uci.ics.crawler4j.crawler;
 
+import com.sapienapps.scrawler.crawler.Configurable;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;

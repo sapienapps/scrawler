@@ -19,7 +19,7 @@ package edu.uci.ics.crawler4j.examples.localdata;
 
 import org.apache.http.HttpStatus;
 
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;

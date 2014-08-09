@@ -17,7 +17,7 @@
 
 package edu.uci.ics.crawler4j.examples.basic;
 
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
@@ -56,7 +56,7 @@ public class BasicCrawlController {
 		 * Be polite: Make sure that we don't send more than 1 request per
 		 * second (1000 milliseconds between requests).
 		 */
-		config.setPolitenessDelay(1000);
+		config.setPolitenessDelay(50);
 
 		/*
 		 * You can set the maximum crawl depth here. The default value is -1 for

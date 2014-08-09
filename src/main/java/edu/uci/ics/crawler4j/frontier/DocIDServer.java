@@ -21,8 +21,8 @@ import org.apache.log4j.Logger;
 
 import com.sleepycat.je.*;
 
-import edu.uci.ics.crawler4j.crawler.Configurable;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.Configurable;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.util.Util;
 
 /**
@@ -137,7 +137,7 @@ public class DocIDServer extends Configurable {
 	}
 
 	public void sync() {
-		if (config.isResumableCrawling()) {
+		if (config().isResumableCrawling()) {
 			return;
 		}
 		if (docIDsDB == null) {

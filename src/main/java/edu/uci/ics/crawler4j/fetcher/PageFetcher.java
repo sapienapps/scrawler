@@ -53,8 +53,8 @@ import org.apache.http.params.HttpProtocolParamBean;
 import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 
-import edu.uci.ics.crawler4j.crawler.Configurable;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.Configurable;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
@@ -150,8 +150,8 @@ public class PageFetcher extends Configurable {
 			get = new HttpGet(toFetchURL);
 			synchronized (mutex) {
 				long now = (new Date()).getTime();
-				if (now - lastFetchTime < config.getPolitenessDelay()) {
-					Thread.sleep(config.getPolitenessDelay() - (now - lastFetchTime));
+				if (now - lastFetchTime < config().getPolitenessDelay()) {
+					Thread.sleep(config().getPolitenessDelay() - (now - lastFetchTime));
 				}
 				lastFetchTime = (new Date()).getTime();
 			}
@@ -200,7 +200,7 @@ public class PageFetcher extends Configurable {
 						size = -1;
 					}
 				}
-				if (size > config.getMaxDownloadSize()) {
+				if (size > config().getMaxDownloadSize()) {
 					fetchResult.setStatusCode(CustomFetchStatus.PageTooBig);
 					get.abort();
 					return fetchResult;

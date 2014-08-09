@@ -18,8 +18,8 @@
 package edu.uci.ics.crawler4j.frontier;
 
 import com.sleepycat.je.*;
-import edu.uci.ics.crawler4j.crawler.Configurable;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.Configurable;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.util.Util;
 
 import java.util.HashMap;
@@ -119,7 +119,7 @@ public class Counters extends Configurable {
 	}
 
 	public void sync() {
-		if (config.isResumableCrawling()) {
+		if (config().isResumableCrawling()) {
 			return;
 		}
 		if (statisticsDB == null) {

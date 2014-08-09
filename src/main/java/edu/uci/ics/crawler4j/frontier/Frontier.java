@@ -19,8 +19,8 @@ package edu.uci.ics.crawler4j.frontier;
 
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.Environment;
-import edu.uci.ics.crawler4j.crawler.Configurable;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import com.sapienapps.scrawler.crawler.Configurable;
+import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.frontier.Counters.ReservedCounterNames;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.apache.log4j.Logger;
@@ -86,7 +86,7 @@ public class Frontier extends Configurable {
 	}
 
 	public void scheduleAll(List<WebURL> urls) {
-		int maxPagesToFetch = config.getMaxPagesToFetch();
+		int maxPagesToFetch = config().getMaxPagesToFetch();
 		synchronized (mutex) {
 			int newScheduledPage = 0;
 			for (WebURL url : urls) {
@@ -111,7 +111,7 @@ public class Frontier extends Configurable {
 	}
 
 	public void schedule(WebURL url) {
-		int maxPagesToFetch = config.getMaxPagesToFetch();
+		int maxPagesToFetch = config().getMaxPagesToFetch();
 		synchronized (mutex) {
 			try {
 				if (maxPagesToFetch < 0 || scheduledPages < maxPagesToFetch) {

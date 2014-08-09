@@ -8,6 +8,7 @@ scalaVersion := "2.11.1"
 
 libraryDependencies ++= Seq(
   "junit" % "junit" % "4.11" % Test,
+  "org.specs2" % "specs2_2.11" % "2.4" % Test,
   "log4j" % "log4j" % "1.2.17",
   "org.apache.httpcomponents" % "httpclient" % "4.3.4",
   "com.sleepycat" % "je" % "5.0.73",
