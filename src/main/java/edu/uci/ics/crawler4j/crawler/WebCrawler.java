@@ -26,7 +26,7 @@ import edu.uci.ics.crawler4j.frontier.Frontier;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.parser.ParseData;
 import edu.uci.ics.crawler4j.parser.Parser;
-import edu.uci.ics.crawler4j.robotstxt.RobotsTxtServer1;
+import edu.uci.ics.crawler4j.robotstxt.RobotsTxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 import org.apache.http.HttpStatus;
@@ -79,7 +79,7 @@ public class WebCrawler<T> implements Runnable {
 	 * determine whether the crawler is allowed to crawl the content of each
 	 * page.
 	 */
-	private RobotsTxtServer1 robotstxtServer;
+	private RobotsTxtServer robotstxtServer;
 
 	/**
 	 * The DocIDServer that is used by this crawler instance to map each URL to

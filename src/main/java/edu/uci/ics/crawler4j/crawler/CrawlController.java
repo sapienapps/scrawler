@@ -24,7 +24,7 @@ import com.sleepycat.je.EnvironmentConfig;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.frontier.DocIDServer;
 import edu.uci.ics.crawler4j.frontier.Frontier;
-import edu.uci.ics.crawler4j.robotstxt.RobotsTxtServer1;
+import edu.uci.ics.crawler4j.robotstxt.RobotsTxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.apache.log4j.Logger;
@@ -80,13 +80,13 @@ public class CrawlController<D, T extends WebCrawler<D>> extends Configurable {
     protected int cleanUpSleep = 5;
 
     protected PageFetcher pageFetcher;
-    protected RobotsTxtServer1 robotstxtServer;
+    protected RobotsTxtServer robotstxtServer;
     protected Frontier frontier;
     protected DocIDServer docIdServer;
 
     protected final Object waitingLock = new Object();
 
-    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotsTxtServer1 robotstxtServer,
+    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotsTxtServer robotstxtServer,
                            int isActive1stSleep, int isActive2ndSleep, int cleanUpSleep) throws Exception {
         this(config, pageFetcher, robotstxtServer);
         this.isActive1stSleep = isActive1stSleep;
@@ -94,7 +94,7 @@ public class CrawlController<D, T extends WebCrawler<D>> extends Configurable {
         this.cleanUpSleep = cleanUpSleep;
     }
 
-    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotsTxtServer1 robotstxtServer)
+    public CrawlController(CrawlConfig config, PageFetcher pageFetcher, RobotsTxtServer robotstxtServer)
             throws Exception {
         super(config);
 
@@ -412,11 +412,11 @@ public class CrawlController<D, T extends WebCrawler<D>> extends Configurable {
         this.pageFetcher = pageFetcher;
     }
 
-    public RobotsTxtServer1 getRobotstxtServer() {
+    public RobotsTxtServer getRobotstxtServer() {
         return robotstxtServer;
     }
 
-    public void setRobotstxtServer(RobotsTxtServer1 robotstxtServer) {
+    public void setRobotstxtServer(RobotsTxtServer robotstxtServer) {
         this.robotstxtServer = robotstxtServer;
     }
 
