@@ -34,15 +34,15 @@ import edu.uci.ics.crawler4j.util.Util;
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
-public class RobotstxtServer {
+public class RobotsTxtServer1 {
 
-	protected RobotstxtConfig config;
+	protected RobotsTxtConfig1 config;
 
 	protected final Map<String, HostDirectives> host2directivesCache = new HashMap<>();
 
 	protected PageFetcher pageFetcher;
 
-	public RobotstxtServer(RobotstxtConfig config, PageFetcher pageFetcher) {
+	public RobotsTxtServer1(RobotsTxtConfig1 config, PageFetcher pageFetcher) {
 		this.config = config;
 		this.pageFetcher = pageFetcher;
 	}
@@ -99,7 +99,7 @@ public class RobotstxtServer {
 						} else {
 							content = new String(page.contentData(), page.contentCharset());
 						}
-						directives = RobotstxtParser.parse(content, config.getUserAgentName());
+						directives = RobotsTxtParser1.parse(content, config.getUserAgentName());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

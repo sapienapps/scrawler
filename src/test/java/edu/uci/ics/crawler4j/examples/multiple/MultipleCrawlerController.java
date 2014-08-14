@@ -20,8 +20,8 @@ package edu.uci.ics.crawler4j.examples.multiple;
 import com.sapienapps.scrawler.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import edu.uci.ics.crawler4j.robotstxt.RobotsTxtConfig1;
+import edu.uci.ics.crawler4j.robotstxt.RobotsTxtServer1;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
@@ -67,8 +67,8 @@ public class MultipleCrawlerController {
 		/*
 		 * We will use the same RobotstxtServer for both of the crawlers.
 		 */
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher1);
+		RobotsTxtConfig1 robotstxtConfig = new RobotsTxtConfig1();
+		RobotsTxtServer1 robotstxtServer = new RobotsTxtServer1(robotstxtConfig, pageFetcher1);
 
 		CrawlController controller1 = new CrawlController(config1, pageFetcher1, robotstxtServer);
 		CrawlController controller2 = new CrawlController(config2, pageFetcher2, robotstxtServer);

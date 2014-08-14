@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
  */
 
 
-public class RobotstxtParser {
+public class RobotsTxtParser1 {
 
 	private static final String PATTERNS_USERAGENT = "(?i)^User-agent:.*";
 	private static final String PATTERNS_DISALLOW = "(?i)Disallow:.*";

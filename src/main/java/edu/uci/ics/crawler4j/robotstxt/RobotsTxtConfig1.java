@@ -17,7 +17,7 @@
 
 package edu.uci.ics.crawler4j.robotstxt;
 
-public class RobotstxtConfig {
+public class RobotsTxtConfig1 {
 
 	/**
 	 * Should the crawler obey Robots.txt protocol? More info on Robots.txt is

@@ -16,7 +16,6 @@
  */
 package com.sapienapps.scrawler.crawler
 
-import com.sapienapps.scrawler.crawler.CrawlConfig
 
 /**
  * Several core components of crawler4j extend this class
