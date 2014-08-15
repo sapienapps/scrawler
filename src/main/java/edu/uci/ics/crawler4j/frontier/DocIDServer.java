@@ -43,10 +43,10 @@ public class DocIDServer extends Configurable {
 		super(config);
 		DatabaseConfig dbConfig = new DatabaseConfig();
 		dbConfig.setAllowCreate(true);
-		dbConfig.setTransactional(config.isResumableCrawling());
-		dbConfig.setDeferredWrite(!config.isResumableCrawling());
+		dbConfig.setTransactional(config.resumableCrawling());
+		dbConfig.setDeferredWrite(!config.resumableCrawling());
 		docIDsDB = env.openDatabase(null, "DocIDs", dbConfig);
-		if (config.isResumableCrawling()) {
+		if (config.resumableCrawling()) {
 			int docCount = getDocCount();
 			if (docCount > 0) {
 				logger.info("Loaded " + docCount + " URLs that had been detected in previous crawl.");
@@ -137,7 +137,7 @@ public class DocIDServer extends Configurable {
 	}
 
 	public void sync() {
-		if (config().isResumableCrawling()) {
+		if (config().resumableCrawling()) {
 			return;
 		}
 		if (docIDsDB == null) {

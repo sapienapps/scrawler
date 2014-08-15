@@ -54,7 +54,7 @@ public class Counters extends Configurable {
 		 * in a transactional database to make sure they are not lost if crawler
 		 * is crashed or terminated unexpectedly.
 		 */
-		if (config.isResumableCrawling()) {
+		if (config.resumableCrawling()) {
 			DatabaseConfig dbConfig = new DatabaseConfig();
 			dbConfig.setAllowCreate(true);
 			dbConfig.setTransactional(true);
@@ -119,7 +119,7 @@ public class Counters extends Configurable {
 	}
 
 	public void sync() {
-		if (config().isResumableCrawling()) {
+		if (config().resumableCrawling()) {
 			return;
 		}
 		if (statisticsDB == null) {

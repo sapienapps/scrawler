@@ -58,8 +58,8 @@ public class Frontier extends Configurable {
 		this.counters = new Counters(env, config);
 		this.docIdServer = docIdServer;
 		try {
-			workQueues = new WorkQueues(env, "PendingURLsDB", config.isResumableCrawling());
-			if (config.isResumableCrawling()) {
+			workQueues = new WorkQueues(env, "PendingURLsDB", config.resumableCrawling());
+			if (config.resumableCrawling()) {
 				scheduledPages = counters.getValue(ReservedCounterNames.SCHEDULED_PAGES);
 				inProcessPages = new InProcessPagesDB(env);
 				long numPreviouslyInProcessPages = inProcessPages.getLength();
@@ -86,7 +86,7 @@ public class Frontier extends Configurable {
 	}
 
 	public void scheduleAll(List<WebURL> urls) {
-		int maxPagesToFetch = config().getMaxPagesToFetch();
+		int maxPagesToFetch = config().maxPagesToFetch();
 		synchronized (mutex) {
 			int newScheduledPage = 0;
 			for (WebURL url : urls) {
@@ -111,7 +111,7 @@ public class Frontier extends Configurable {
 	}
 
 	public void schedule(WebURL url) {
-		int maxPagesToFetch = config().getMaxPagesToFetch();
+		int maxPagesToFetch = config().maxPagesToFetch();
 		synchronized (mutex) {
 			try {
 				if (maxPagesToFetch < 0 || scheduledPages < maxPagesToFetch) {

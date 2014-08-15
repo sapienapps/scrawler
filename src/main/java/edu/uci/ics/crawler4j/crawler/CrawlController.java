@@ -99,21 +99,21 @@ public class CrawlController<D, T extends WebCrawler<D>> extends Configurable {
         super(config);
 
         config.validate();
-        File folder = new File(config.getCrawlStorageFolder());
+        File folder = new File(config.crawlStorageFolder());
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
                 throw new Exception("Couldn't create this folder: " + folder.getAbsolutePath());
             }
         }
 
-        boolean resumable = config.isResumableCrawling();
+        boolean resumable = config.resumableCrawling();
 
         EnvironmentConfig envConfig = new EnvironmentConfig();
         envConfig.setAllowCreate(true);
         envConfig.setTransactional(resumable);
         envConfig.setLocking(resumable);
 
-        File envHome = new File(config.getCrawlStorageFolder() + "/frontier");
+        File envHome = new File(config.crawlStorageFolder() + "/frontier");
         if (!envHome.exists()) {
             if (!envHome.mkdir()) {
                 throw new Exception("Couldn't create this folder: " + envHome.getAbsolutePath());

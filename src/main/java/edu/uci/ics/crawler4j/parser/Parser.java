@@ -56,7 +56,7 @@ public class Parser extends Configurable {
 	public boolean parse(Page page, String contextURL) {
 
 		if (Util.hasBinaryContent(page.contentType())) {
-			if (!config().isIncludeBinaryContentInCrawling()) {
+			if (!config().includeBinaryContentInCrawling()) {
 				return false;
 			}
 
@@ -132,7 +132,7 @@ public class Parser extends Configurable {
 					webURL.setAnchor(urlAnchorPair.getAnchor());
 					outgoingUrls.add(webURL);
 					urlCount++;
-					if (urlCount > config().getMaxOutgoingLinksToFollow()) {
+					if (urlCount > config().maxOutgoingLinksToFollow()) {
 						break;
 					}
 				}
@@ -154,7 +154,5 @@ public class Parser extends Configurable {
 
 		page.parseData_$eq(parseData);
 		return true;
-
 	}
-
 }

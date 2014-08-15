@@ -68,10 +68,10 @@ public class PageFetcher extends Configurable {
         super(config);
 
         RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT)
-                .setSocketTimeout(config.getSocketTimeout())
-                .setConnectTimeout(config.getConnectionTimeout())
-                .setRedirectsEnabled(config.isFollowRedirects())
-                .setRelativeRedirectsAllowed(config.isFollowRedirects())
+                .setSocketTimeout(config.socketTimeout())
+                .setConnectTimeout(config.connectionTimeout())
+                .setRedirectsEnabled(config.followRedirects())
+                .setRelativeRedirectsAllowed(config.followRedirects())
                 .setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY).build();
 
         SSLConnectionSocketFactory https = new SSLConnectionSocketFactory((SSLSocketFactory) SSLSocketFactory.getDefault(),
@@ -82,20 +82,20 @@ public class PageFetcher extends Configurable {
                 .register("https", https).build();
 
         connectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-        connectionManager.setMaxTotal(config.getMaxTotalConnections());
-        connectionManager.setDefaultMaxPerRoute(config.getMaxConnectionsPerHost());
+        connectionManager.setMaxTotal(config.maxTotalConnections());
+        connectionManager.setDefaultMaxPerRoute(config.maxConnectionsPerHost());
 
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
-        if (config.getProxyHost() != null) {
-            if (config.getProxyUsername() != null) {
+        if (config.proxyHost() != null) {
+            if (config.proxyUsername() != null) {
                 CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
                 credentialsProvider.setCredentials(
-                        new AuthScope(config.getProxyHost(), config.getProxyPort()),
-                        new UsernamePasswordCredentials(config.getProxyUsername(), config.getProxyPassword()));
+                        new AuthScope(config.proxyHost(), config.proxyPort()),
+                        new UsernamePasswordCredentials(config.proxyUsername(), config.proxyPassword()));
                 httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
             }
-            HttpHost proxy = new HttpHost(config.getProxyHost(), config.getProxyPort());
+            HttpHost proxy = new HttpHost(config.proxyHost(), config.proxyPort());
             httpClientBuilder.setProxy(proxy);
         }
 
@@ -118,7 +118,7 @@ public class PageFetcher extends Configurable {
 
         httpClient = HttpClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig)
-                .setUserAgent(config.getUserAgentString())
+                .setUserAgent(config.userAgentString())
                 .addInterceptorLast(responseInterceptor).build();
 
 
@@ -136,8 +136,8 @@ public class PageFetcher extends Configurable {
             get = new HttpGet(toFetchURL);
             synchronized (mutex) {
                 long now = (new Date()).getTime();
-                if (now - lastFetchTime < config().getPolitenessDelay()) {
-                    Thread.sleep(config().getPolitenessDelay() - (now - lastFetchTime));
+                if (now - lastFetchTime < config().politenessDelay()) {
+                    Thread.sleep(config().politenessDelay() - (now - lastFetchTime));
                 }
                 lastFetchTime = (new Date()).getTime();
             }
@@ -186,7 +186,7 @@ public class PageFetcher extends Configurable {
                         size = -1;
                     }
                 }
-                if (size > config().getMaxDownloadSize()) {
+                if (size > config().maxDownloadSize()) {
                     fetchResult.setStatusCode(CustomFetchStatus.PageTooBig);
                     get.abort();
                     return fetchResult;

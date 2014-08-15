@@ -268,7 +268,7 @@ public class WebCrawler<T> implements Runnable {
 			handlePageStatusCode(curURL, statusCode, CustomFetchStatus.getStatusDescription(statusCode));
 			if (statusCode != HttpStatus.SC_OK) {
 				if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-					if (myController.config().isFollowRedirects()) {
+					if (myController.config().followRedirects()) {
 						String movedToUrl = fetchResult.getMovedToUrl();
 						if (movedToUrl == null) {
 							return;
@@ -324,7 +324,7 @@ public class WebCrawler<T> implements Runnable {
 				HtmlParseData htmlParseData = (HtmlParseData) parseData;
 
 				List<WebURL> toSchedule = new ArrayList<>();
-				int maxCrawlDepth = myController.config().getMaxDepthOfCrawling();
+				int maxCrawlDepth = myController.config().maxDepthOfCrawling();
 				for (WebURL webURL : htmlParseData.getOutgoingUrls()) {
 					webURL.setParentDocid(docid);
 					webURL.setParentUrl(curURL.getURL());

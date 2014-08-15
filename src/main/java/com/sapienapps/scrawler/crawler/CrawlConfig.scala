@@ -16,7 +16,60 @@
  */
 package com.sapienapps.scrawler.crawler
 
-class CrawlConfig {
+
+/**
+ * @param crawlStorageFolder The folder which will be used by crawler for storing the intermediate
+ *                           crawl data. The content of this folder should not be modified manually.
+ * @param resumableCrawling If this feature is enabled, you would be able to resume a previously
+ *                          stopped/crashed crawl. However, it makes crawling slightly slower
+ * @param maxDepthOfCrawling Maximum depth of crawling For unlimited depth this parameter should be
+ *                           set to -1
+ * @param maxPagesToFetch Maximum number of pages to fetch For unlimited number of pages, this
+ *                        parameter should be set to -1
+ * @param userAgentString user-agent string that is used for representing your crawler to web
+ *                        servers. See http://en.wikipedia.org/wiki/User_agent for more details
+ * @param politenessDelay Politeness delay in milliseconds (delay between sending two requests to
+ *                        the same host).
+ * @param includeHttpsPages Should we also crawl https pages?
+ * @param includeBinaryContentInCrawling Should we fetch binary content such as images, audio, ...?
+ * @param maxConnectionsPerHost Maximum Connections per host
+ * @param maxTotalConnections Maximum total connections
+ * @param socketTimeout Socket timeout in milliseconds
+ * @param connectionTimeout Connection timeout in milliseconds
+ * @param maxOutgoingLinksToFollow Max number of outgoing links which are processed from a page
+ * @param maxDownloadSize Max allowed size of a page. Pages larger than this size will not be
+ *                        fetched.
+ * @param followRedirects Should we follow redirects?
+ * @param proxyHost If crawler should run behind a proxy, this parameter can be used for
+ *                  specifying the proxy host.
+ * @param proxyPort If crawler should run behind a proxy, this parameter can be used for
+ *                  specifying the proxy port.
+ * @param proxyUsername If crawler should run behind a proxy and user/pass is needed for
+ *                      authentication in proxy, this parameter can be used for specifying the
+ *                      username.
+ * @param proxyPassword If crawler should run behind a proxy and user/pass is needed for
+ *                      authentication in proxy, this parameter can be used for specifying the
+ *                      password.
+ */
+case class CrawlConfig(crawlStorageFolder: String,
+                       resumableCrawling: Boolean = false,
+                       maxDepthOfCrawling: Int = -1,
+                       maxPagesToFetch: Int = -1,
+                       userAgentString: String = "crawler4j (http://code.google.com/p/crawler4j/)",
+                       politenessDelay: Int = 200,
+                       includeHttpsPages: Boolean = false,
+                       includeBinaryContentInCrawling: Boolean = false,
+                       maxConnectionsPerHost: Int = 100,
+                       maxTotalConnections: Int = 100,
+                       socketTimeout: Int = 20000,
+                       connectionTimeout: Int = 30000,
+                       maxOutgoingLinksToFollow: Int = 5000,
+                       maxDownloadSize: Int = 1048576,
+                       followRedirects: Boolean = true,
+                       proxyHost: String = null,
+                       proxyPort: Int = 80,
+                       proxyUsername: String = null,
+                       proxyPassword: String = null) {
 
   /**
    * Validates the configs specified by this instance.
@@ -38,339 +91,27 @@ class CrawlConfig {
     }
   }
 
-  def getCrawlStorageFolder: String = crawlStorageFolder
-
-  /**
-   * The folder which will be used by crawler for storing the intermediate
-   * crawl data. The content of this folder should not be modified manually.
-   */
-  def setCrawlStorageFolder(crawlStorageFolder: String) {
-    this.crawlStorageFolder = crawlStorageFolder
-  }
-
-  def isResumableCrawling: Boolean = {
-    resumableCrawling
-  }
-
-  /**
-   * If this feature is enabled, you would be able to resume a previously
-   * stopped/crashed crawl. However, it makes crawling slightly slower
-   */
-  def setResumableCrawling(resumableCrawling: Boolean) {
-    this.resumableCrawling = resumableCrawling
-  }
-
-  def getMaxDepthOfCrawling: Int = {
-    maxDepthOfCrawling
-  }
-
-  /**
-   * Maximum depth of crawling For unlimited depth this parameter should be
-   * set to -1
-   */
-  def setMaxDepthOfCrawling(maxDepthOfCrawling: Int) {
-    this.maxDepthOfCrawling = maxDepthOfCrawling
-  }
-
-  def getMaxPagesToFetch: Int = {
-    maxPagesToFetch
-  }
-
-  /**
-   * Maximum number of pages to fetch For unlimited number of pages, this
-   * parameter should be set to -1
-   */
-  def setMaxPagesToFetch(maxPagesToFetch: Int) {
-    this.maxPagesToFetch = maxPagesToFetch
-  }
-
-  def getUserAgentString: String = {
-    userAgentString
-  }
-
-  /**
-   * user-agent string that is used for representing your crawler to web
-   * servers. See http://en.wikipedia.org/wiki/User_agent for more details
-   */
-  def setUserAgentString(userAgentString: String) {
-    this.userAgentString = userAgentString
-  }
-
-  def getPolitenessDelay: Int = {
-    politenessDelay
-  }
-
-  /**
-   * Politeness delay in milliseconds (delay between sending two requests to
-   * the same host).
-   *
-   * @param politenessDelay
-	 * the delay in milliseconds.
-   */
-  def setPolitenessDelay(politenessDelay: Int) {
-    this.politenessDelay = politenessDelay
-  }
-
-  def isIncludeHttpsPages: Boolean = {
-    includeHttpsPages
-  }
-
-  /**
-   * Should we also crawl https pages?
-   */
-  def setIncludeHttpsPages(includeHttpsPages: Boolean) {
-    this.includeHttpsPages = includeHttpsPages
-  }
-
-  def isIncludeBinaryContentInCrawling: Boolean = {
-    includeBinaryContentInCrawling
-  }
-
-  /**
-   * Should we fetch binary content such as images, audio, ...?
-   */
-  def setIncludeBinaryContentInCrawling(includeBinaryContentInCrawling: Boolean) {
-    this.includeBinaryContentInCrawling = includeBinaryContentInCrawling
-  }
-
-  def getMaxConnectionsPerHost: Int = {
-    maxConnectionsPerHost
-  }
-
-  /**
-   * Maximum Connections per host
-   */
-  def setMaxConnectionsPerHost(maxConnectionsPerHost: Int) {
-    this.maxConnectionsPerHost = maxConnectionsPerHost
-  }
-
-  def getMaxTotalConnections: Int = {
-    maxTotalConnections
-  }
-
-  /**
-   * Maximum total connections
-   */
-  def setMaxTotalConnections(maxTotalConnections: Int) {
-    this.maxTotalConnections = maxTotalConnections
-  }
-
-  def getSocketTimeout: Int = {
-    socketTimeout
-  }
-
-  /**
-   * Socket timeout in milliseconds
-   */
-  def setSocketTimeout(socketTimeout: Int) {
-    this.socketTimeout = socketTimeout
-  }
-
-  def getConnectionTimeout: Int = {
-    connectionTimeout
-  }
-
-  /**
-   * Connection timeout in milliseconds
-   */
-  def setConnectionTimeout(connectionTimeout: Int) {
-    this.connectionTimeout = connectionTimeout
-  }
-
-  def getMaxOutgoingLinksToFollow: Int = {
-    maxOutgoingLinksToFollow
-  }
-
-  /**
-   * Max number of outgoing links which are processed from a page
-   */
-  def setMaxOutgoingLinksToFollow(maxOutgoingLinksToFollow: Int) {
-    this.maxOutgoingLinksToFollow = maxOutgoingLinksToFollow
-  }
-
-  def getMaxDownloadSize: Int = {
-    maxDownloadSize
-  }
-
-  /**
-   * Max allowed size of a page. Pages larger than this size will not be
-   * fetched.
-   */
-  def setMaxDownloadSize(maxDownloadSize: Int) {
-    this.maxDownloadSize = maxDownloadSize
-  }
-
-  def isFollowRedirects: Boolean = {
-    followRedirects
-  }
-
-  /**
-   * Should we follow redirects?
-   */
-  def setFollowRedirects(followRedirects: Boolean) {
-    this.followRedirects = followRedirects
-  }
-
-  def getProxyHost: String = {
-    proxyHost
-  }
-
-  /**
-   * If crawler should run behind a proxy, this parameter can be used for
-   * specifying the proxy host.
-   */
-  def setProxyHost(proxyHost: String) {
-    this.proxyHost = proxyHost
-  }
-
-  def getProxyPort: Int = {
-    proxyPort
-  }
-
-  /**
-   * If crawler should run behind a proxy, this parameter can be used for
-   * specifying the proxy port.
-   */
-  def setProxyPort(proxyPort: Int) {
-    this.proxyPort = proxyPort
-  }
-
-  def getProxyUsername: String = {
-    proxyUsername
-  }
-
-  /**
-   * If crawler should run behind a proxy and user/pass is needed for
-   * authentication in proxy, this parameter can be used for specifying the
-   * username.
-   */
-  def setProxyUsername(proxyUsername: String) {
-    this.proxyUsername = proxyUsername
-  }
-
-  def getProxyPassword: String = {
-    proxyPassword
-  }
-
-  /**
-   * If crawler should run behind a proxy and user/pass is needed for
-   * authentication in proxy, this parameter can be used for specifying the
-   * password.
-   */
-  def setProxyPassword(proxyPassword: String) {
-    this.proxyPassword = proxyPassword
-  }
-
   override def toString: String = {
     val sb: StringBuilder = new StringBuilder
-    sb.append("Crawl storage folder: " + getCrawlStorageFolder + "\n")
-    sb.append("Resumable crawling: " + isResumableCrawling + "\n")
-    sb.append("Max depth of crawl: " + getMaxDepthOfCrawling + "\n")
-    sb.append("Max pages to fetch: " + getMaxPagesToFetch + "\n")
-    sb.append("User agent string: " + getUserAgentString + "\n")
-    sb.append("Include https pages: " + isIncludeHttpsPages + "\n")
-    sb.append("Include binary content: " + isIncludeBinaryContentInCrawling + "\n")
-    sb.append("Max connections per host: " + getMaxConnectionsPerHost + "\n")
-    sb.append("Max total connections: " + getMaxTotalConnections + "\n")
-    sb.append("Socket timeout: " + getSocketTimeout + "\n")
-    sb.append("Max total connections: " + getMaxTotalConnections + "\n")
-    sb.append("Max outgoing links to follow: " + getMaxOutgoingLinksToFollow + "\n")
-    sb.append("Max download size: " + getMaxDownloadSize + "\n")
-    sb.append("Should follow redirects?: " + isFollowRedirects + "\n")
-    sb.append("Proxy host: " + getProxyHost + "\n")
-    sb.append("Proxy port: " + getProxyPort + "\n")
-    sb.append("Proxy username: " + getProxyUsername + "\n")
-    sb.append("Proxy password: " + getProxyPassword + "\n")
-    sb.toString
+    sb.append("Crawl storage folder: " + crawlStorageFolder + "\n")
+    sb.append("Resumable crawling: " + resumableCrawling + "\n")
+    sb.append("Max depth of crawl: " + maxDepthOfCrawling + "\n")
+    sb.append("Max pages to fetch: " + maxPagesToFetch + "\n")
+    sb.append("User agent string: " + userAgentString + "\n")
+    sb.append("Include https pages: " + includeHttpsPages + "\n")
+    sb.append("Include binary content: " + includeBinaryContentInCrawling + "\n")
+    sb.append("Max connections per host: " + maxConnectionsPerHost + "\n")
+    sb.append("Max total connections: " + maxTotalConnections + "\n")
+    sb.append("Socket timeout: " + socketTimeout + "\n")
+    sb.append("Max total connections: " + maxTotalConnections + "\n")
+    sb.append("Max outgoing links to follow: " + maxOutgoingLinksToFollow + "\n")
+    sb.append("Max download size: " + maxDownloadSize + "\n")
+    sb.append("Should follow redirects?: " + followRedirects + "\n")
+    sb.append("Proxy host: " + proxyHost + "\n")
+    sb.append("Proxy port: " + proxyPort + "\n")
+    sb.append("Proxy username: " + proxyUsername + "\n")
+    sb.append("Proxy password: " + proxyPassword + "\n")
+    sb.toString()
   }
 
-  /**
-   * The folder which will be used by crawler for storing the intermediate
-   * crawl data. The content of this folder should not be modified manually.
-   */
-  private var crawlStorageFolder: String = null
-  /**
-   * If this feature is enabled, you would be able to resume a previously
-   * stopped/crashed crawl. However, it makes crawling slightly slower
-   */
-  private var resumableCrawling: Boolean = false
-  /**
-   * Maximum depth of crawling For unlimited depth this parameter should be
-   * set to -1
-   */
-  private var maxDepthOfCrawling: Int = -1
-  /**
-   * Maximum number of pages to fetch For unlimited number of pages, this
-   * parameter should be set to -1
-   */
-  private var maxPagesToFetch: Int = -1
-  /**
-   * user-agent string that is used for representing your crawler to web
-   * servers. See http://en.wikipedia.org/wiki/User_agent for more details
-   */
-  private var userAgentString: String = "crawler4j (http://code.google.com/p/crawler4j/)"
-  /**
-   * Politeness delay in milliseconds (delay between sending two requests to
-   * the same host).
-   */
-  private var politenessDelay: Int = 200
-  /**
-   * Should we also crawl https pages?
-   */
-  private var includeHttpsPages: Boolean = false
-  /**
-   * Should we fetch binary content such as images, audio, ...?
-   */
-  private var includeBinaryContentInCrawling: Boolean = false
-  /**
-   * Maximum Connections per host
-   */
-  private var maxConnectionsPerHost: Int = 100
-  /**
-   * Maximum total connections
-   */
-  private var maxTotalConnections: Int = 100
-  /**
-   * Socket timeout in milliseconds
-   */
-  private var socketTimeout: Int = 20000
-  /**
-   * Connection timeout in milliseconds
-   */
-  private var connectionTimeout: Int = 30000
-  /**
-   * Max number of outgoing links which are processed from a page
-   */
-  private var maxOutgoingLinksToFollow: Int = 5000
-  /**
-   * Max allowed size of a page. Pages larger than this size will not be
-   * fetched.
-   */
-  private var maxDownloadSize: Int = 1048576
-  /**
-   * Should we follow redirects?
-   */
-  private var followRedirects: Boolean = true
-  /**
-   * If crawler should run behind a proxy, this parameter can be used for
-   * specifying the proxy host.
-   */
-  private var proxyHost: String = null
-  /**
-   * If crawler should run behind a proxy, this parameter can be used for
-   * specifying the proxy port.
-   */
-  private var proxyPort: Int = 80
-  /**
-   * If crawler should run behind a proxy and user/pass is needed for
-   * authentication in proxy, this parameter can be used for specifying the
-   * username.
-   */
-  private var proxyUsername: String = null
-  /**
-   * If crawler should run behind a proxy and user/pass is needed for
-   * authentication in proxy, this parameter can be used for specifying the
-   * password.
-   */
-  private var proxyPassword: String = null
 }
