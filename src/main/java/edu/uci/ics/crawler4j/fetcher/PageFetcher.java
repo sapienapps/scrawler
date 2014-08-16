@@ -19,6 +19,7 @@ package edu.uci.ics.crawler4j.fetcher;
 
 import com.sapienapps.scrawler.crawler.Configurable;
 import com.sapienapps.scrawler.crawler.CrawlConfig;
+import com.sapienapps.scrawler.fetcher.CustomFetchStatus;
 import com.sapienapps.scrawler.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -188,7 +189,7 @@ public class PageFetcher extends Configurable {
                     }
                 }
                 if (size > config().maxDownloadSize()) {
-                    fetchResult.statusCode_$eq(CustomFetchStatus.PageTooBig);
+                    fetchResult.statusCode_$eq(CustomFetchStatus.PageTooBig());
                     get.abort();
                     return fetchResult;
                 }
@@ -203,7 +204,7 @@ public class PageFetcher extends Configurable {
         } catch (IOException e) {
             logger.error("Fatal transport error: " + e.getMessage() + " while fetching " + toFetchURL
                     + " (link found in doc #" + webUrl.getParentDocid() + ")");
-            fetchResult.statusCode_$eq(CustomFetchStatus.FatalTransportError);
+            fetchResult.statusCode_$eq(CustomFetchStatus.FatalTransportError());
             return fetchResult;
         } catch (IllegalStateException e) {
             // ignoring exceptions that occur because of not registering https
@@ -223,7 +224,7 @@ public class PageFetcher extends Configurable {
                 e.printStackTrace();
             }
         }
-        fetchResult.statusCode_$eq(CustomFetchStatus.UnknownError);
+        fetchResult.statusCode_$eq(CustomFetchStatus.UnknownError());
         return fetchResult;
     }
 

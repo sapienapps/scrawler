@@ -18,8 +18,8 @@
 package edu.uci.ics.crawler4j.crawler;
 
 import com.sapienapps.scrawler.crawler.Page;
+import com.sapienapps.scrawler.fetcher.CustomFetchStatus;
 import com.sapienapps.scrawler.fetcher.PageFetchResult;
-import edu.uci.ics.crawler4j.fetcher.CustomFetchStatus;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.frontier.DocIDServer;
 import edu.uci.ics.crawler4j.frontier.Frontier;
@@ -291,7 +291,7 @@ public class WebCrawler<T> implements Runnable {
 							frontier.schedule(webURL);
 						}
 					}
-				} else if (fetchResult.statusCode() == CustomFetchStatus.PageTooBig) {
+				} else if (fetchResult.statusCode() == CustomFetchStatus.PageTooBig()) {
 					logger.info("Skipping a page which was bigger than max allowed size: " + curURL.getURL());
 				}
 				return;
