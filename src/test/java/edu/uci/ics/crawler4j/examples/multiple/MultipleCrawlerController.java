@@ -49,14 +49,14 @@ public class MultipleCrawlerController {
 		 * The two crawlers should have different storage folders for their
 		 * intermediate data
 		 */
-		config1.setCrawlStorageFolder(crawlStorageFolder + "/crawler1");
-		config2.setCrawlStorageFolder(crawlStorageFolder + "/crawler2");
+		config1.crawlStorageFolder_$eq(crawlStorageFolder + "/crawler1");
+		config2.crawlStorageFolder_$eq(crawlStorageFolder + "/crawler2");
 
-		config1.setPolitenessDelay(1000);
-		config2.setPolitenessDelay(2000);
+		config1.politenessDelay_$eq(1000);
+		config2.politenessDelay_$eq(2000);
 
-		config1.setMaxPagesToFetch(50);
-		config2.setMaxPagesToFetch(100);
+		config1.maxPagesToFetch_$eq(50);
+		config2.maxPagesToFetch_$eq(100);
 
 		/*
 		 * We will use different PageFetchers for the two crawlers.

@@ -18,7 +18,7 @@
 package edu.uci.ics.crawler4j.crawler;
 
 import com.sapienapps.scrawler.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
+import com.sapienapps.scrawler.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.CustomFetchStatus;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.frontier.DocIDServer;
@@ -264,12 +264,12 @@ public class WebCrawler<T> implements Runnable {
 		PageFetchResult fetchResult = null;
 		try {
 			fetchResult = pageFetcher.fetchHeader(curURL);
-			int statusCode = fetchResult.getStatusCode();
+			int statusCode = fetchResult.statusCode();
 			handlePageStatusCode(curURL, statusCode, CustomFetchStatus.getStatusDescription(statusCode));
 			if (statusCode != HttpStatus.SC_OK) {
 				if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
 					if (myController.config().followRedirects()) {
-						String movedToUrl = fetchResult.getMovedToUrl();
+						String movedToUrl = fetchResult.movedToUrl();
 						if (movedToUrl == null) {
 							return;
 						}
@@ -291,19 +291,19 @@ public class WebCrawler<T> implements Runnable {
 							frontier.schedule(webURL);
 						}
 					}
-				} else if (fetchResult.getStatusCode() == CustomFetchStatus.PageTooBig) {
+				} else if (fetchResult.statusCode() == CustomFetchStatus.PageTooBig) {
 					logger.info("Skipping a page which was bigger than max allowed size: " + curURL.getURL());
 				}
 				return;
 			}
 
-			if (!curURL.getURL().equals(fetchResult.getFetchedUrl())) {
-				if (docIdServer.isSeenBefore(fetchResult.getFetchedUrl())) {
+			if (!curURL.getURL().equals(fetchResult.fetchedUrl())) {
+				if (docIdServer.isSeenBefore(fetchResult.fetchedUrl())) {
 					// Redirect page is already seen
 					return;
 				}
-				curURL.setURL(fetchResult.getFetchedUrl());
-				curURL.setDocid(docIdServer.getNewDocID(fetchResult.getFetchedUrl()));
+				curURL.setURL(fetchResult.fetchedUrl());
+				curURL.setDocid(docIdServer.getNewDocID(fetchResult.fetchedUrl()));
 			}
 
 			Page page = new Page(curURL);

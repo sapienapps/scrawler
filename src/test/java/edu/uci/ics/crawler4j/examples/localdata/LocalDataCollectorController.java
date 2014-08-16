@@ -38,9 +38,9 @@ public class LocalDataCollectorController {
 		int numberOfCrawlers = Integer.parseInt(args[1]);
 
 		CrawlConfig config = new CrawlConfig();
-		config.setCrawlStorageFolder(rootFolder);
-		config.setMaxPagesToFetch(10);
-		config.setPolitenessDelay(1000);
+		config.crawlStorageFolder_$eq(rootFolder);
+		config.maxPagesToFetch_$eq(10);
+		config.politenessDelay_$eq(1000);
 
 		PageFetcher pageFetcher = new PageFetcher(config);
 		RobotsTxtConfig robotstxtConfig = new RobotsTxtConfig();

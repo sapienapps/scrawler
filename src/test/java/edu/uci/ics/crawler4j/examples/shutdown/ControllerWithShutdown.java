@@ -51,12 +51,12 @@ public class ControllerWithShutdown {
 
 		CrawlConfig config = new CrawlConfig();
 
-		config.setCrawlStorageFolder(crawlStorageFolder);
+		config.crawlStorageFolder_$eq(crawlStorageFolder);
 
-		config.setPolitenessDelay(1000);
+		config.politenessDelay_$eq(1000);
 
 		// Unlimited number of pages can be crawled.
-		config.setMaxPagesToFetch(-1);
+		config.maxPagesToFetch_$eq(-1);
 
 		/*
 		 * Instantiate the controller for this crawl.

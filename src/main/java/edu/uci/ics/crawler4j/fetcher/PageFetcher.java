@@ -19,6 +19,7 @@ package edu.uci.ics.crawler4j.fetcher;
 
 import com.sapienapps.scrawler.crawler.Configurable;
 import com.sapienapps.scrawler.crawler.CrawlConfig;
+import com.sapienapps.scrawler.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.apache.http.*;
@@ -143,8 +144,8 @@ public class PageFetcher extends Configurable {
             }
             get.addHeader("Accept-Encoding", "gzip");
             HttpResponse response = httpClient.execute(get);
-            fetchResult.setEntity(response.getEntity());
-            fetchResult.setResponseHeaders(response.getAllHeaders());
+            fetchResult.entity_$eq(response.getEntity());
+            fetchResult.responseHeaders_$eq(response.getAllHeaders());
 
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
@@ -154,27 +155,27 @@ public class PageFetcher extends Configurable {
                         if (header != null) {
                             String movedToUrl = header.getValue();
                             movedToUrl = URLCanonicalizer.getCanonicalURL(movedToUrl, toFetchURL);
-                            fetchResult.setMovedToUrl(movedToUrl);
+                            fetchResult.movedToUrl_$eq(movedToUrl);
                         }
-                        fetchResult.setStatusCode(statusCode);
+                        fetchResult.statusCode_$eq(statusCode);
                         return fetchResult;
                     }
                     logger.info("Failed: " + response.getStatusLine().toString() + ", while fetching " + toFetchURL);
                 }
-                fetchResult.setStatusCode(response.getStatusLine().getStatusCode());
+                fetchResult.statusCode_$eq(response.getStatusLine().getStatusCode());
                 return fetchResult;
             }
 
-            fetchResult.setFetchedUrl(toFetchURL);
+            fetchResult.fetchedUrl_$eq(toFetchURL);
             String uri = get.getURI().toString();
             if (!uri.equals(toFetchURL)) {
                 if (!URLCanonicalizer.getCanonicalURL(uri).equals(toFetchURL)) {
-                    fetchResult.setFetchedUrl(uri);
+                    fetchResult.fetchedUrl_$eq(uri);
                 }
             }
 
-            if (fetchResult.getEntity() != null) {
-                long size = fetchResult.getEntity().getContentLength();
+            if (fetchResult.entity() != null) {
+                long size = fetchResult.entity().getContentLength();
                 if (size == -1) {
                     Header length = response.getLastHeader("Content-Length");
                     if (length == null) {
@@ -187,12 +188,12 @@ public class PageFetcher extends Configurable {
                     }
                 }
                 if (size > config().maxDownloadSize()) {
-                    fetchResult.setStatusCode(CustomFetchStatus.PageTooBig);
+                    fetchResult.statusCode_$eq(CustomFetchStatus.PageTooBig);
                     get.abort();
                     return fetchResult;
                 }
 
-                fetchResult.setStatusCode(HttpStatus.SC_OK);
+                fetchResult.statusCode_$eq(HttpStatus.SC_OK);
                 return fetchResult;
 
             }
@@ -202,7 +203,7 @@ public class PageFetcher extends Configurable {
         } catch (IOException e) {
             logger.error("Fatal transport error: " + e.getMessage() + " while fetching " + toFetchURL
                     + " (link found in doc #" + webUrl.getParentDocid() + ")");
-            fetchResult.setStatusCode(CustomFetchStatus.FatalTransportError);
+            fetchResult.statusCode_$eq(CustomFetchStatus.FatalTransportError);
             return fetchResult;
         } catch (IllegalStateException e) {
             // ignoring exceptions that occur because of not registering https
@@ -215,14 +216,14 @@ public class PageFetcher extends Configurable {
             }
         } finally {
             try {
-                if (fetchResult.getEntity() == null && get != null) {
+                if (fetchResult.entity() == null && get != null) {
                     get.abort();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        fetchResult.setStatusCode(CustomFetchStatus.UnknownError);
+        fetchResult.statusCode_$eq(CustomFetchStatus.UnknownError);
         return fetchResult;
     }
 

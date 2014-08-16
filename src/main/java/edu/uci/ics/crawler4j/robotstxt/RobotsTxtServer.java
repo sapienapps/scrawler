@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import org.apache.http.HttpStatus;
 
 import com.sapienapps.scrawler.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
+import com.sapienapps.scrawler.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.Util;
@@ -88,7 +88,7 @@ public class RobotsTxtServer {
 		PageFetchResult fetchResult = null;
 		try {
 			fetchResult = pageFetcher.fetchHeader(robotsTxtUrl);
-			if (fetchResult.getStatusCode() == HttpStatus.SC_OK) {
+			if (fetchResult.statusCode() == HttpStatus.SC_OK) {
 				Page page = new Page(robotsTxtUrl);
 				fetchResult.fetchContent(page);
 				if (Util.hasPlainTextContent(page.contentType())) {

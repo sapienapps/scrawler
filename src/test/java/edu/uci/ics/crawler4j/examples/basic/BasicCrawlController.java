@@ -50,25 +50,25 @@ public class BasicCrawlController {
 
 		CrawlConfig config = new CrawlConfig();
 
-		config.setCrawlStorageFolder(crawlStorageFolder);
+		config.crawlStorageFolder_$eq(crawlStorageFolder);
 
 		/*
 		 * Be polite: Make sure that we don't send more than 1 request per
 		 * second (1000 milliseconds between requests).
 		 */
-		config.setPolitenessDelay(50);
+		config.politenessDelay_$eq(50);
 
 		/*
 		 * You can set the maximum crawl depth here. The default value is -1 for
 		 * unlimited depth
 		 */
-		config.setMaxDepthOfCrawling(2);
+		config.maxDepthOfCrawling_$eq(2);
 
 		/*
 		 * You can set the maximum number of pages to crawl. The default value
 		 * is -1 for unlimited number of pages
 		 */
-		config.setMaxPagesToFetch(1000);
+		config.maxPagesToFetch_$eq(1000);
 
 		/*
 		 * Do you need to set a proxy? If so, you can use:
@@ -86,7 +86,7 @@ public class BasicCrawlController {
 		 * want to start a fresh crawl, you need to delete the contents of
 		 * rootFolder manually.
 		 */
-		config.setResumableCrawling(false);
+		config.resumableCrawling_$eq(false);
 
 		/*
 		 * Instantiate the controller for this crawl.

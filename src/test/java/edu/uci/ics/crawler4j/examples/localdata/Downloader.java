@@ -21,7 +21,7 @@ import org.apache.http.HttpStatus;
 
 import com.sapienapps.scrawler.crawler.CrawlConfig;
 import com.sapienapps.scrawler.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
+import com.sapienapps.scrawler.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.parser.ParseData;
@@ -49,7 +49,7 @@ public class Downloader {
 		PageFetchResult fetchResult = null;
 		try {
 			fetchResult = pageFetcher.fetchHeader(curURL);
-			if (fetchResult.getStatusCode() == HttpStatus.SC_OK) {
+			if (fetchResult.statusCode() == HttpStatus.SC_OK) {
 				try {
 					Page page = new Page(curURL);
 					fetchResult.fetchContent(page);

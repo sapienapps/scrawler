@@ -48,13 +48,13 @@ public class ImageCrawlController {
 
 		CrawlConfig config = new CrawlConfig();
 
-		config.setCrawlStorageFolder(rootFolder);
+		config.crawlStorageFolder_$eq(rootFolder);
 
 		/*
 		 * Since images are binary content, we need to set this parameter to
 		 * true to make sure they are included in the crawl.
 		 */
-		config.setIncludeBinaryContentInCrawling(true);
+		config.includeBinaryContentInCrawling_$eq(true);
 
 		String[] crawlDomains = new String[] { "http://uci.edu/" };
 
