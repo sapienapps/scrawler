@@ -1,6 +1,6 @@
 name := "crawler4j"
 
-version := "3.5.2"
+version := "3.5.3"
 
 organization := "com.sapienapps"
 

@@ -68,11 +68,14 @@ public class PageFetcher extends Configurable {
 
     public PageFetcher(CrawlConfig config) {
         super(config);
+        // This should be disabled to prevent false SSL Errors:
+        // http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7127374
+        //System.setProperty ("jsse.enableSNIExtension", "false");
 
         RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT)
                 .setSocketTimeout(config.socketTimeout())
                 .setConnectTimeout(config.connectionTimeout())
-                .setRedirectsEnabled(config.followRedirects())
+                .setRedirectsEnabled(false)
                 .setRelativeRedirectsAllowed(config.followRedirects())
                 .setCookieSpec(CookieSpecs.BROWSER_COMPATIBILITY).build();
 
@@ -120,7 +123,7 @@ public class PageFetcher extends Configurable {
 
         httpClient = HttpClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig)
-                .setUserAgent(config.userAgentString())
+                .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.67 Safari/537.36")
                 .addInterceptorLast(responseInterceptor).build();
 
 
@@ -151,7 +154,9 @@ public class PageFetcher extends Configurable {
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
                 if (statusCode != HttpStatus.SC_NOT_FOUND) {
-                    if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+                    // Let's capture all Redirects:
+                    //if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+                    if (statusCode >= 300 && statusCode < 400) {
                         Header header = response.getFirstHeader("Location");
                         if (header != null) {
                             String movedToUrl = header.getValue();

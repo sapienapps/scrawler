@@ -267,7 +267,9 @@ public class WebCrawler<T> implements Runnable {
 			int statusCode = fetchResult.statusCode();
 			handlePageStatusCode(curURL, statusCode, CustomFetchStatus.getStatusDescription(statusCode));
 			if (statusCode != HttpStatus.SC_OK) {
-				if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+                // Let's capture all Redirects:
+                // if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY || statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+                if (statusCode >= 300 && statusCode < 400) {
 					if (myController.config().followRedirects()) {
 						String movedToUrl = fetchResult.movedToUrl();
 						if (movedToUrl == null) {
