@@ -157,9 +157,9 @@ public class WebCrawler<T> implements Runnable {
 	 * overwritten by sub-classes to perform custom logic for different status
 	 * codes. For example, 404 pages can be logged, etc.
 	 * 
-	 * @param webUrl
-	 * @param statusCode
-	 * @param statusDescription
+	 * @param webUrl that generated a status code
+	 * @param statusCode HTML code generated
+	 * @param statusDescription of the HTML status code
 	 */
 	protected void handlePageStatusCode(WebURL webUrl, int statusCode, String statusDescription) {
 		// Do nothing by default
@@ -169,7 +169,7 @@ public class WebCrawler<T> implements Runnable {
 	/**
 	 * This function is called if the content of a url could not be fetched.
 	 * 
-	 * @param webUrl
+	 * @param webUrl that generated a content fetch error
 	 */
 	protected void onContentFetchError(WebURL webUrl) {
 		// Do nothing by default
@@ -180,11 +180,23 @@ public class WebCrawler<T> implements Runnable {
 	 * This function is called if there has been an error in parsing the
 	 * content.
 	 * 
-	 * @param webUrl
+	 * @param webUrl that generated a parse error
 	 */
 	protected void onParseError(WebURL webUrl) {
 		// Do nothing by default
 		// Sub-classed can override this to add their custom functionality
+	}
+
+	/**
+	 * This function is before the WebURL is added to the craw
+	 *
+	 * @param webUrl to be modified
+	 * @return WebURL updated accordingly
+	 */
+	protected WebURL beforeUrlAdd(WebURL webUrl) {
+		// Do nothing by default
+		// Sub-classed can override this to add their custom functionality
+		return webUrl;
 	}
 
 	/**
@@ -290,7 +302,8 @@ public class WebCrawler<T> implements Runnable {
 						webURL.setAnchor(curURL.getAnchor());
 						if (shouldVisit(webURL) && robotstxtServer.allows(webURL)) {
 							webURL.setDocid(docIdServer.getNewDocID(movedToUrl));
-							frontier.schedule(webURL);
+							WebURL updatedURL = beforeUrlAdd(webURL);
+							frontier.schedule(updatedURL);
 						}
 					}
 				} else if (fetchResult.statusCode() == CustomFetchStatus.PageTooBig()) {
@@ -330,20 +343,21 @@ public class WebCrawler<T> implements Runnable {
 				for (WebURL webURL : htmlParseData.getOutgoingUrls()) {
 					webURL.setParentDocid(docid);
 					webURL.setParentUrl(curURL.getURL());
-					int newdocid = docIdServer.getDocId(webURL.getURL());
-					if (newdocid > 0) {
+					int newDocId = docIdServer.getDocId(webURL.getURL());
+					if (newDocId > 0) {
 						// This is not the first time that this Url is
 						// visited. So, we set the depth to a negative
 						// number.
 						webURL.setDepth((short) -1);
-						webURL.setDocid(newdocid);
+						webURL.setDocid(newDocId);
 					} else {
 						webURL.setDocid(-1);
 						webURL.setDepth((short) (curURL.getDepth() + 1));
 						if (maxCrawlDepth == -1 || curURL.getDepth() < maxCrawlDepth) {
 							if (shouldVisit(webURL) && robotstxtServer.allows(webURL)) {
 								webURL.setDocid(docIdServer.getNewDocID(webURL.getURL()));
-								toSchedule.add(webURL);
+								WebURL updatedURL = beforeUrlAdd(webURL);
+								toSchedule.add(updatedURL);
 							}
 						}
 					}

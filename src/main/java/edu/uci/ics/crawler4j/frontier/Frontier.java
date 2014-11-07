@@ -120,7 +120,7 @@ public class Frontier extends Configurable {
 					counters.increment(Counters.ReservedCounterNames.SCHEDULED_PAGES);
 				}
 			} catch (DatabaseException e) {
-				logger.error("Error while puting the url in the work queue.");
+				logger.error("Error while putting the url in the work queue.");
 			}
 		}
 	}
