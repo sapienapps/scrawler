@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   "log4j" % "log4j" % "1.2.17",
   "org.apache.httpcomponents" % "httpclient" % "4.3.5",
   "com.sleepycat" % "je" % "5.0.73",
-  "org.apache.tika" % "tika-parsers" % "1.5" excludeAll(
+  "org.apache.tika" % "tika-parsers" % "1.6" excludeAll(
     ExclusionRule(organization = "org.apache.poi"),
     ExclusionRule(organization = "edu.ucar"),
     ExclusionRule(organization = "jdom"),
