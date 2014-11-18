@@ -460,6 +460,7 @@ public class CrawlController<D, T extends WebCrawler<D>> extends Configurable {
     public void shutdown() {
         logger.info("Shutting down...");
         this.shuttingDown = true;
+        getPageFetcher().shutDown();
         frontier.finish();
     }
 }

@@ -198,6 +198,7 @@ public class Frontier extends Configurable {
 		workQueues.close();
         docIdServer.close();
         counters.close();
+		inProcessPages.close();
         env.close();
 	}
 
